@@ -24,7 +24,6 @@ function love.update(dt)
 		player.x = player.x + player.speed  *dt
 	end
 	
-
 end
 
 function love.draw()

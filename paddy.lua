@@ -20,36 +20,59 @@ paddy = {}
 paddy.touched = {}
 
 paddy.dpad = {}
-paddy.dpad.buttonw = 150
-paddy.dpad.buttonh = 150
+paddy.buttonw = 120
+paddy.buttonh = 120
 
-paddy.dpad.w = paddy.dpad.buttonw*3
-paddy.dpad.h = paddy.dpad.buttonh*3
+paddy.dpad.w = paddy.buttonw*3
+paddy.dpad.h = paddy.buttonh*3
 paddy.dpad.x = 20
 paddy.dpad.y = love.graphics.getHeight()-20-paddy.dpad.h
 paddy.dpad.canvas = love.graphics.newCanvas(paddy.dpad.w,paddy.dpad.h)
-paddy.dpad.isDown = nil
 paddy.dpad.opacity = 200
+paddy.dpad.padding = 10
 
 paddy.dpad.buttons = {
-	{ name="up",   x=paddy.dpad.buttonw, y=0},
-	{ name="left", x=0, y=paddy.dpad.buttonh },
-	{ name="right",x=paddy.dpad.buttonw*2, y=paddy.dpad.buttonh },
-	{ name="down", x=paddy.dpad.buttonw, y=paddy.dpad.buttonh*2 },
+	{ name="up",   x=paddy.buttonw, y=0},
+	{ name="left", x=0, y=paddy.buttonh },
+	{ name="right",x=paddy.buttonw*2, y=paddy.buttonh },
+	{ name="down", x=paddy.buttonw, y=paddy.buttonh*2 },
 }
+
+
 
 
 function paddy.draw()
 
     love.graphics.setCanvas(paddy.dpad.canvas)
     love.graphics.clear()
-    love.graphics.setColor(155,155,155,255)
-
+    
+	love.graphics.setColor(155,155,155,255)
+	
     for i,button in ipairs(paddy.dpad.buttons) do
-        love.graphics.rectangle("line", button.x, button.y, paddy.dpad.buttonw, paddy.dpad.buttonh)
+		
+        --love.graphics.rectangle("line", button.x, button.y, paddy.buttonw, paddy.buttonh)
+        
         if button.isDown then
-		love.graphics.rectangle("fill", button.x, button.y, paddy.dpad.buttonw, paddy.dpad.buttonh)
+			love.graphics.setColor(155,155,155,255)
+			love.graphics.rectangle("fill", 
+				button.x+paddy.dpad.padding, 
+				button.y+paddy.dpad.padding, 
+				paddy.buttonw-paddy.dpad.padding*2, 
+				paddy.buttonh-paddy.dpad.padding*2,
+			10
+			)
+		else
+			love.graphics.setColor(155,155,155,200)	
+			love.graphics.rectangle("line", 
+				button.x+paddy.dpad.padding, 
+				button.y+paddy.dpad.padding, 
+				paddy.buttonw-paddy.dpad.padding*2, 
+				paddy.buttonh-paddy.dpad.padding*2,
+			10
+			)
         end
+        
+
     end
     
     love.graphics.setCanvas()
@@ -67,7 +90,7 @@ end
 
 function paddy.dpad.isDown(key)
 	for i,button in ipairs(paddy.dpad.buttons) do
-		if button.isDown and button.name == key then return button.name end
+		if button.isDown and button.name == key then return end
 	end
 end
 
@@ -78,12 +101,13 @@ function paddy.update(dt)
 		button.isDown = false
 		for i,id in ipairs(paddy.touched) do	
 			local tx,ty = love.touch.getPosition(id)
-			if tx >= paddy.dpad.x+button.x and tx <= paddy.dpad.x+button.x+paddy.dpad.buttonw 
-			and ty >= paddy.dpad.y+button.y and ty <= paddy.dpad.y+button.y+paddy.dpad.buttonh then
+			if  tx >= paddy.dpad.x+button.x 
+			and tx <= paddy.dpad.x+button.x+paddy.buttonw 
+			and ty >= paddy.dpad.y+button.y 
+			and ty <= paddy.dpad.y+button.y+paddy.buttonh then
 				button.isDown = true
 			end
 		end
-        
     end
 end
 
