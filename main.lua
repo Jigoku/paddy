@@ -12,7 +12,8 @@ end
 function love.update(dt)
 
 	--check the dpad for touch events
-	
+	paddy.update(dt)
+
 	if paddy.dpad.isDown("up") then
 		player.y = player.y - player.speed  *dt
 	elseif paddy.dpad.isDown("down") then
@@ -22,6 +23,7 @@ function love.update(dt)
 	elseif paddy.dpad.isDown("right") then
 		player.x = player.x + player.speed  *dt
 	end
+	
 
 end
 
