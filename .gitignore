@@ -1,0 +1,4 @@
+.directory
+*.bak
+*.old
+build/
