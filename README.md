@@ -1,5 +1,5 @@
 # Paddy
-an onscreen controller display for touch enabled devices 
+An onscreen controller display for touch enabled devices 
 
 ### Requirements
 * love2d 0.10.2
@@ -21,3 +21,4 @@ function love.update(dt)
 	end
 end
 ```
+See *main.lua* for a working example.
