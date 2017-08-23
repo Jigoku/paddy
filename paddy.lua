@@ -20,8 +20,8 @@ paddy = {}
 paddy.touched = {}
 
 paddy.dpad = {}
-paddy.buttonw = 120
-paddy.buttonh = 120
+paddy.buttonw = 100
+paddy.buttonh = 100
 
 paddy.dpad.w = paddy.buttonw*3
 paddy.dpad.h = paddy.buttonh*3
@@ -29,7 +29,7 @@ paddy.dpad.x = 20
 paddy.dpad.y = love.graphics.getHeight()-20-paddy.dpad.h
 paddy.dpad.canvas = love.graphics.newCanvas(paddy.dpad.w,paddy.dpad.h)
 paddy.dpad.opacity = 200
-paddy.dpad.padding = 10
+paddy.dpad.padding = 5
 
 paddy.dpad.buttons = {
 	{ name="up",   x=paddy.buttonw, y=0},
@@ -42,6 +42,9 @@ paddy.dpad.buttons = {
 
 
 function paddy.draw()
+
+    love.graphics.setColor(155,155,155,50)
+    love.graphics.circle("fill", paddy.dpad.x+paddy.dpad.w/2,paddy.dpad.y+paddy.dpad.h/2,paddy.dpad.w/2)
 
     love.graphics.setCanvas(paddy.dpad.canvas)
     love.graphics.clear()
@@ -90,7 +93,7 @@ end
 
 function paddy.dpad.isDown(key)
 	for i,button in ipairs(paddy.dpad.buttons) do
-		if button.isDown and button.name == key then return end
+		if button.isDown and button.name == key then return true end
 	end
 end
 
