@@ -17,16 +17,17 @@
  --]]
 
 paddy = {}
-paddy.debug = false
+paddy.debug = true
 
 -- The size of the buttons which can be pressed.
-paddy.buttonw = 150
+paddy.buttonw = 100
 paddy.buttonh = 100
+
 
 -- This lists any buttons which are currently being pressed
 paddy.touched = {}
 
--- Paddy setup
+-- Create a dpad widget
 paddy.dpad = {}
 
 -- The properties of the canvas to draw
@@ -49,46 +50,93 @@ paddy.dpad.buttons = {
 }
 
 
+-- Create a buttons widget
+paddy.buttons = {}
+
+-- The properties of the canvas to draw
+paddy.buttons.w = paddy.buttonw*3
+paddy.buttons.h = paddy.buttonh*3
+paddy.buttons.x = love.graphics.getWidth()-20-paddy.buttons.w
+paddy.buttons.y = love.graphics.getHeight()-20-paddy.buttons.h
+paddy.buttons.canvas = love.graphics.newCanvas(paddy.buttons.w,paddy.buttons.h)
+
+-- These just make things look prettier
+paddy.buttons.opacity = 200
+paddy.buttons.padding = 5
+
+-- Setup the names for the buttons, and their position on the canvas
+paddy.buttons.buttons = {
+	{ name="y", x=paddy.buttonw, y=0 },
+	{ name="x", x=0, y=paddy.buttonh },
+	{ name="b", x=paddy.buttonw*2, y=paddy.buttonh },
+	{ name="a", x=paddy.buttonw, y=paddy.buttonh*2 },
+}
+
+-- Stores any widgets containing interactive buttons
+paddy.widgets = { paddy.dpad, paddy.buttons }
+
 
 function paddy.draw()
 	-- Draw the control pad
-
+	for _,widget in ipairs(paddy.widgets) do
     love.graphics.setColor(155,155,155,50)
-    love.graphics.circle("fill", paddy.dpad.x+paddy.dpad.w/2,paddy.dpad.y+paddy.dpad.h/2,paddy.dpad.w/2)
+    love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
 
-    love.graphics.setCanvas(paddy.dpad.canvas)
+    love.graphics.setCanvas(widget.canvas)
     love.graphics.clear()
     
 	love.graphics.setColor(155,155,155,255)
 	
-    for _,button in ipairs(paddy.dpad.buttons) do
-        if button.isDown then
-			love.graphics.setColor(155,155,155,255)
-			love.graphics.rectangle("fill", 
-				button.x+paddy.dpad.padding, 
-				button.y+paddy.dpad.padding, 
-				paddy.buttonw-paddy.dpad.padding*2, 
-				paddy.buttonh-paddy.dpad.padding*2,
-				10
-			)
-		else
-			love.graphics.setColor(155,155,155,200)	
-			love.graphics.rectangle("line", 
-				button.x+paddy.dpad.padding, 
-				button.y+paddy.dpad.padding, 
-				paddy.buttonw-paddy.dpad.padding*2, 
-				paddy.buttonh-paddy.dpad.padding*2,
-				10
-			)
-        end
-    end
+
+		for _,button in ipairs(widget.buttons) do
+			if button.isDown then
+				love.graphics.setColor(155,155,155,255)
+				love.graphics.rectangle("fill", 
+					button.x+widget.padding, 
+					button.y+widget.padding, 
+					paddy.buttonw-widget.padding*2, 
+					paddy.buttonh-widget.padding*2,
+					10
+				)
+			else
+				love.graphics.setColor(155,155,155,200)	
+				love.graphics.rectangle("line", 
+					button.x+widget.padding, 
+					button.y+widget.padding, 
+					paddy.buttonw-widget.padding*2, 
+					paddy.buttonh-widget.padding*2,
+					10
+				)
+			end
+			
+			
+			-- Temporary code until  button naming can be improved
+			if paddy.debug then
+				love.graphics.setColor(255,255,255,255)
+				
+				local font = love.graphics.newFont(20)
+				love.graphics.setFont(font)
+				local str = button.name
+				
+
+				
+				love.graphics.printf(
+					button.name, 
+					button.x+paddy.buttonw/2,
+					button.y+paddy.buttonh/2, 
+					font:getWidth(str),
+					"center"
+				)
+			end
+		end
     
     love.graphics.setCanvas()
-    love.graphics.setColor(255,255,255,paddy.dpad.opacity)
-    love.graphics.draw(paddy.dpad.canvas, paddy.dpad.x, paddy.dpad.y)
-
+    love.graphics.setColor(255,255,255,widget.opacity)
+    love.graphics.draw(widget.canvas, widget.x, widget.y)
+	end
+	
+	
     -- debug
-	-- Use this to see where you are pressing on the screen
 	if paddy.debug then
 		for _,id in ipairs(paddy.touched) do
 			local x,y = love.touch.getPosition(id)
@@ -100,8 +148,10 @@ end
 
 function paddy.dpad.isDown(key)
 	-- Check for any buttons which are currently being pressed
-	for _,button in ipairs(paddy.dpad.buttons) do
-		if button.isDown and button.name == key then return true end
+	for _,widget in ipairs(paddy.widgets) do
+		for _,button in ipairs(widget) do
+			if button.isDown and button.name == key then return true end
+		end
 	end
 end
 
@@ -110,19 +160,20 @@ function paddy.update(dt)
 	-- simple collision, then change the state of the button
 
     paddy.touched = love.touch.getTouches()
- 
-	for _,button in ipairs(paddy.dpad.buttons) do
-		button.isDown = false
-		for _,id in ipairs(paddy.touched) do	
-			local tx,ty = love.touch.getPosition(id)
-			if  tx >= paddy.dpad.x+button.x 
-			and tx <= paddy.dpad.x+button.x+paddy.buttonw 
-			and ty >= paddy.dpad.y+button.y 
-			and ty <= paddy.dpad.y+button.y+paddy.buttonh then
-				button.isDown = true
+ 	for _,widget in ipairs(paddy.widgets) do
+		for _,button in ipairs(widget.buttons) do
+			button.isDown = false
+			for _,id in ipairs(paddy.touched) do	
+				local tx,ty = love.touch.getPosition(id)
+				if  tx >= widget.x+button.x 
+				and tx <= widget.x+button.x+paddy.buttonw 
+				and ty >= widget.y+button.y 
+				and ty <= widget.y+button.y+paddy.buttonh then
+					button.isDown = true
+				end
 			end
 		end
-    end
+	end
 end
 
 
