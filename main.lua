@@ -1,8 +1,10 @@
+-- Example program for using paddy library
+
 function love.load()
-	--load the paddy module
+	-- Load the paddy module
     require("paddy")
     
-    --create an object we can move
+    -- Create an object we can move
     player = {}
     player.x = love.graphics.getWidth()/2
     player.y = love.graphics.getHeight()/2
@@ -11,7 +13,7 @@ end
 
 function love.update(dt)
 
-	--check the dpad for touch events
+	-- Check the dpad for touch events
 	paddy.update(dt)
 
 	if paddy.dpad.isDown("up") then
@@ -28,11 +30,11 @@ end
 
 function love.draw()
 
-	--draw the player
+	-- Draw the player
     love.graphics.setColor(255,0,0,255)
     love.graphics.rectangle("fill", player.x,player.y,50,50)
     
-    --draw the touchpad controls
+    -- Draw the touchpad controls
     paddy.draw()
     
 end
