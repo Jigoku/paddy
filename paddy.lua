@@ -20,8 +20,8 @@ paddy = {}
 paddy.debug = true
 
 -- The size of the buttons which can be pressed.
-paddy.buttonw = 100
-paddy.buttonh = 100
+paddy.buttonw = 150
+paddy.buttonh = 150
 
 
 -- This lists any buttons which are currently being pressed
@@ -136,7 +136,7 @@ function paddy.draw()
 	end
 	
 	
-    -- debug
+    -- debug related
 	if paddy.debug then
 		for _,id in ipairs(paddy.touched) do
 			local x,y = love.touch.getPosition(id)
@@ -146,10 +146,10 @@ function paddy.draw()
 
 end
 
-function paddy.dpad.isDown(key)
+function paddy.isDown(key)
 	-- Check for any buttons which are currently being pressed
 	for _,widget in ipairs(paddy.widgets) do
-		for _,button in ipairs(widget) do
+		for _,button in ipairs(widget.buttons) do
 			if button.isDown and button.name == key then return true end
 		end
 	end

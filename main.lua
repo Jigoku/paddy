@@ -9,6 +9,8 @@ function love.load()
     player.x = love.graphics.getWidth()/2
     player.y = love.graphics.getHeight()/2
     player.speed = 500
+    player.w = 50
+    player.h = 70
 end
 
 function love.update(dt)
@@ -16,23 +18,33 @@ function love.update(dt)
 	-- Check the dpad for touch events
 	paddy.update(dt)
 
-	if paddy.dpad.isDown("up") then
+	if paddy.isDown("up") then
 		player.y = player.y - player.speed  *dt
-	elseif paddy.dpad.isDown("down") then
+	elseif paddy.isDown("down") then
 		player.y = player.y + player.speed  *dt
-	elseif paddy.dpad.isDown("left") then
+	elseif paddy.isDown("left") then
 		player.x = player.x - player.speed  *dt
-	elseif paddy.dpad.isDown("right") then
+	elseif paddy.isDown("right") then
 		player.x = player.x + player.speed  *dt
 	end
 	
+	
+	if paddy.isDown("x") then
+		player.w = player.w - player.speed  *dt
+	elseif paddy.isDown("y") then
+		player.w = player.w + player.speed  *dt
+	elseif paddy.isDown("a") then
+		player.h = player.h - player.speed  *dt
+	elseif paddy.isDown("b") then
+		player.h = player.h + player.speed  *dt
+	end
 end
 
 function love.draw()
 
 	-- Draw the player
     love.graphics.setColor(255,0,0,255)
-    love.graphics.rectangle("fill", player.x,player.y,50,50)
+    love.graphics.rectangle("fill", player.x,player.y,player.w,player.h)
     
     -- Draw the touchpad controls
     paddy.draw()
