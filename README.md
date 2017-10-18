@@ -16,9 +16,17 @@ end
 function love.update(dt)
 	paddy.update(dt)
 
-	if paddy.dpad.isDown("right") then
+	if paddy.isDown("right") then
 		--move right
 	end
+
+	if paddy.isDown("a") then
+		-- jump
+	end
+
+	-- etc
+	-- currently supported inputs
+	-- left/right/up/down/x/y/a/b
 end
 ```
 See *main.lua* for a working example.
