@@ -79,13 +79,13 @@ paddy.widgets = { paddy.dpad, paddy.buttons }
 function paddy.draw()
 	-- Draw the control pad
 	for _,widget in ipairs(paddy.widgets) do
-    love.graphics.setColor(155,155,155,50)
-    love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
+		love.graphics.setColor(155,155,155,50)
+		love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
 
-    love.graphics.setCanvas(widget.canvas)
-    love.graphics.clear()
-    
-	love.graphics.setColor(155,155,155,255)
+		love.graphics.setCanvas(widget.canvas)
+		love.graphics.clear()
+	
+		love.graphics.setColor(155,155,155,255)
 	
 
 		for _,button in ipairs(widget.buttons) do
@@ -129,14 +129,14 @@ function paddy.draw()
 				)
 			end
 		end
-    
-    love.graphics.setCanvas()
-    love.graphics.setColor(255,255,255,widget.opacity)
-    love.graphics.draw(widget.canvas, widget.x, widget.y)
+	
+		love.graphics.setCanvas()
+		love.graphics.setColor(255,255,255,widget.opacity)
+		love.graphics.draw(widget.canvas, widget.x, widget.y)
 	end
 	
 	
-    -- debug related
+	-- debug related
 	if paddy.debug then
 		for _,id in ipairs(paddy.touched) do
 			local x,y = love.touch.getPosition(id)
@@ -159,7 +159,8 @@ function paddy.update(dt)
 	-- Decide which buttons are being pressed based on a 
 	-- simple collision, then change the state of the button
 
-    paddy.touched = love.touch.getTouches()
+	paddy.touched = love.touch.getTouches()
+	
  	for _,widget in ipairs(paddy.widgets) do
 		for _,button in ipairs(widget.buttons) do
 			button.isDown = false

@@ -2,15 +2,15 @@
 
 function love.load()
 	-- Load the paddy module
-    require("paddy")
-    
-    -- Create an object we can move
-    player = {}
-    player.x = love.graphics.getWidth()/2
-    player.y = love.graphics.getHeight()/2
-    player.speed = 500
-    player.w = 50
-    player.h = 70
+	require("paddy")
+	
+	-- Create an object we can move
+	player = {}
+	player.x = love.graphics.getWidth()/2
+	player.y = love.graphics.getHeight()/2
+	player.speed = 500
+	player.w = 50
+	player.h = 70
 end
 
 function love.update(dt)
@@ -43,17 +43,17 @@ end
 function love.draw()
 
 	-- Draw the player
-    love.graphics.setColor(255,0,0,255)
-    love.graphics.rectangle("fill", player.x,player.y,player.w,player.h)
-    
-    -- Draw the touchpad controls
-    paddy.draw()
-    
+	love.graphics.setColor(255,0,0,255)
+	love.graphics.rectangle("fill", player.x,player.y,player.w,player.h)
+	
+	-- Draw the touchpad controls
+	paddy.draw()
+	
 end
 
 
 function love.keypressed(key)
-    if key == "escape" then
-        love.event.quit()
-    end
+	if key == "escape" then
+		love.event.quit()
+	end
 end
