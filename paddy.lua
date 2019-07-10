@@ -20,8 +20,8 @@ paddy = {}
 paddy.debug = true
 
 -- The size of the buttons which can be pressed.
-paddy.buttonw = 150
-paddy.buttonh = 150
+paddy.buttonw = 50
+paddy.buttonh = 50
 
 
 -- This lists any buttons which are currently being pressed
@@ -79,18 +79,18 @@ paddy.widgets = { paddy.dpad, paddy.buttons }
 function paddy.draw()
 	-- Draw the control pad
 	for _,widget in ipairs(paddy.widgets) do
-		love.graphics.setColor(155,155,155,50)
+		love.graphics.setColor(0.607,0.607,0.607,0.196)
 		love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
 
 		love.graphics.setCanvas(widget.canvas)
 		love.graphics.clear()
 	
-		love.graphics.setColor(155,155,155,255)
+		love.graphics.setColor(0.607,0.607,0.607,1)
 	
 
 		for _,button in ipairs(widget.buttons) do
 			if button.isDown then
-				love.graphics.setColor(155,155,155,255)
+				love.graphics.setColor(0.607,0.607,0.607,1)
 				love.graphics.rectangle("fill", 
 					button.x+widget.padding, 
 					button.y+widget.padding, 
@@ -99,7 +99,7 @@ function paddy.draw()
 					10
 				)
 			else
-				love.graphics.setColor(155,155,155,200)	
+				love.graphics.setColor(0.607,0.607,0.607,0.784)	
 				love.graphics.rectangle("line", 
 					button.x+widget.padding, 
 					button.y+widget.padding, 
@@ -112,7 +112,7 @@ function paddy.draw()
 			
 			-- Temporary code until  button naming can be improved
 			if paddy.debug then
-				love.graphics.setColor(255,255,255,255)
+				love.graphics.setColor(1,1,1,1)
 				
 				local font = love.graphics.newFont(20)
 				love.graphics.setFont(font)
@@ -131,7 +131,7 @@ function paddy.draw()
 		end
 	
 		love.graphics.setCanvas()
-		love.graphics.setColor(255,255,255,widget.opacity)
+		love.graphics.setColor(1,1,1,widget.opacity)
 		love.graphics.draw(widget.canvas, widget.x, widget.y)
 	end
 	
